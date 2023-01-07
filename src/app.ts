@@ -16,7 +16,7 @@ router.use(express.json())
 router.use('/', routers)
 
 const server = http.createServer(router)
-server.listen('3333', () => console.log("Deu bão!"))
+server.listen('3333', () => console.log("Server Started"))
 
 
 

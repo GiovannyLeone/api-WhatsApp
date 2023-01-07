@@ -1,5 +1,4 @@
 import parsePhoneNumber, { isValidPhoneNumber } from "libphonenumber-js";
-import { start } from "repl";
 import { create, Whatsapp, Message, SocketState } from "venom-bot";
 
 export type QRcode = {
