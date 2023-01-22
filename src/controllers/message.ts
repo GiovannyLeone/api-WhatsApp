@@ -4,7 +4,6 @@ import { send } from "process"
 import Sender from "../sender"
 const sender = new Sender()
 
-
 const getStatus = async (req: Request, res: Response) => {
     return res.send({
         qr_code: sender.qrCode,
@@ -19,6 +18,7 @@ const sendMessageToPerson = async (req: Request, res: Response) => {
         //validar os dados
 
         await sender.sendText(number, message)
+        
         return res.status(200).json({
             message: "Mensagem enviada com sucesso!"
         })

@@ -1,6 +1,8 @@
 import parsePhoneNumber, { isValidPhoneNumber } from "libphonenumber-js";
 import { create, Whatsapp, Message, SocketState } from "venom-bot";
 
+const venom = require('venom-bot');
+
 export type QRcode = {
     base64Qr: string
     asciiQR: string
@@ -13,15 +15,15 @@ class Sender {
     private connected: boolean
     private qr: QRcode
 
-    
-    public get isConnected() : boolean {
-        return  this.connected
+
+    public get isConnected(): boolean {
+        return this.connected
     }
 
-    public get qrCode() : QRcode {
-        return  this.qr
+    public get qrCode(): QRcode {
+        return this.qr
     }
-    
+
 
     constructor() {
         this.initialize()
@@ -32,7 +34,7 @@ class Sender {
             base64Qr: string,
             asciiQR: string,
             attempts: number,
-            ) => {
+        ) => {
             this.qr = { base64Qr, asciiQR, attempts }
         }
 
@@ -46,12 +48,30 @@ class Sender {
             )
         }
 
-        const start = (client: Whatsapp) => {
+
+
+        const start = async (client: Whatsapp) => {
             this.client = client
+            console.log("Iniciado");
+
+           await client.onMessage(async (message) => {
+                if (message.body == 'Hi' && message.isGroupMsg == false) {
+                   await client
+                        .sendText(message.from, 'Welcome Venom 🕷')
+                        .then((result) => {
+                            console.log('Result: ', result); //return object success
+                        })
+                        .catch((erro) => {
+                            console.error('Error when sending: ', erro); //return object error
+                        });
+                }
+            });
+
 
             client.onStateChange((state) => {
-                 this.connected = state === SocketState.CONNECTED
+                this.connected = state === SocketState.CONNECTED
             })
+
         }
 
         create('ws-sender-dev', qr, status)
